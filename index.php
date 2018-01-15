@@ -1,12 +1,10 @@
 <?php
-
 //Set Your InforMation
-$ToKeN = "token";
-$MyChannel = "@WorldTm";
-$Dev = 140313934;
-$phone = '+989330114289';
-$namea = 'DR.AMIR #ωøяł∂™ #mr™🇪';
-
+$ToKeN = "349085572:AAHFrHsold8Hwiu4l9fH17elshz9ksfYRos"; // توکن شما
+$MyChannel = "@WorldTm"; // ایدی کانال شما
+$Dev = 217180605; // ایدی عددی شما
+$phone = '+989330114289'; // شماره شما
+$namea = 'DR.AMIR #ωøяł∂™ #mr™🇪';// نام شما
 error_reporting(0);
 define('API_KEY',$ToKeN);
 //●●●●●●●●●●●●●●●●●●●
@@ -101,7 +99,7 @@ $forward_chat = $update->message->forward_from_chat;
 $data = $update->callback_query->data;
 $caption = $update->message->caption;
 $banlist = file_get_contents('data/banlist.txt');
-$step = file_get_contents("data/$from_id/step.txt");
+$step = file_get_contents("data/$Dev/step.txt");
 $start = file_get_contents('data/start.txt');
 $done = file_get_contents('data/done.txt');
 $off_on = file_get_contents("data/bot.txt");
@@ -132,8 +130,6 @@ $file = $update->message->document;
 $music = $update->message->audio;
 $voice = $update->message->voice;
 $forward = $update->message->forward_from;
-$truechannel = json_decode(file_get_contents("https://api.telegram.org/bot$ToKeN/getChatMember?chat_id=$MyChannel&user_id=".$from_id));
-$tch = $truechannel->result->status;
 $datetime = json_decode(file_get_contents("http://api.mostafa-am.ir/date-time/"));
 $time = $datetime->time_fa;
 $date = $datetime->date_fa;
@@ -156,18 +152,15 @@ mkdir("data/$from_id");
  }
  if(strpos($off_on,"false") !== false && $from_id != $Dev){
      SendMessage($from_id,"ربات به دستور ادمین تا اطلاع ثانوی _خاموش_ می باشد 😄
-
 لطفا در زمانی دیگر مجددا پیام خود را ارسال کنید 🌹");
  return false;
 }
 //---------------AnTi Flood
 $timing = date("Y-m-d-h-i-sa");
 $timing = str_replace("am","",$timing);
-
 $metti_khan = file_get_contents("flood/$timing-$from_id.txt");
 $timing_spam = $metti_khan+1;
 file_put_contents("flood/$timing-$from_id.txt","$timing_spam");
-
 $metti_khan2 = file_get_contents("flood/$timing-$from_id.txt");
 if($metti_khan2 >= 3){
 SendMessage($chat_id, "شما به علت ارسال پیغام مکرر از ربات محروم شدید!");
@@ -177,37 +170,20 @@ fclose($myfile2);
 return false;
 }
 //---------------End AnTi Flood
- if($tch != 'creator' && $tch != 'administrator' && $tch != 'member'){
-     if ($lockch == "فعال ✔️"){
-SendAction($chat_id, 'typing');
-bot('SendMessage',[
-'chat_id'=>$chat_id,
-'text'=>"🍃  برای استفاده از این ربات لازم است ابتدا وارد کانال زیر شده و روی *Join* بزنید.
-🆔 $MyChannel
-🌀 سپس مجدد دستور /start را ارسال کنید تا بتوانید از ربات استفاده کنید.️",
-'parse_mode'=>'MarkDown',
-'hide_keyboard'=>true,
-]);
-return false;
-}
- }
- 
+
 if ($text == "/start" && $from_id == $Dev) {
 	save("data/$Dev/step.txt","none");
 SendAction($chat_id, 'typing');
 bot('SendMessage',[
 'chat_id'=>$chat_id,
 'text'=>"سلام قربان 😃🌹
-
 به ربات خودتون خوش اومدید!
 جهت راهنمایی /help را ارسال کنید.
-
 🕰 ساعت » $time
 📆 تاریخ » $FAdate",
 ]);
 }
 //●●●●●●●●●●●●●●●●●●●
-
   elseif ($text == "/start" && $button !="bbutton") {
       save("data/$chat_id/step.txt","none");
       $user = file_get_contents('data/users.txt');
@@ -448,80 +424,56 @@ $UserName =  new CURLFile('data/username.txt');
 	  $UseRs =  new CURLFile('index.php');
         SendDocument($chat_id ,$UseRs ,'📁 آخرین بکاپ از ربات');
 }
-
 //---------------------------------------------------------------------------------
 elseif($text=="/help" && $from_id == $Dev){
 	SendAction($chat_id, 'typing');
 bot('sendmessage',[
 'chat_id'=>$chat_id,
 'text'=>"🔻 راهنمایی ربات پیام رسان 🔻
-
 ● /help
 -| ارسال راهنمایی ربات (همین متن)
-
 ● /ban `[id | reply]`
 -| مسدود شخص از ربات
-
 ● /unban `[id | reply]`
 -| لغو مسدودیت شخص از ربات
-
 ● /banlist
 -| نمایش لیست اعضای مسدود
-
 ● /cleanbanlist
 -| پاکسازی لیست اعضای مسدود شده
-
 ● /status
 -| نمایش تعداد اعضای کاربران
-
 ● /lastuser
 -| نمایش آیدی 10 کاربر اخیر
-
 ● /users
 -| نمایش تمامی اعضا بصورت فایل
-
 ● /bot `[on | off]`
 -| تغییر وضعیت ربات (روشن - خاموش)
-
 ● /lockch `[on | off]`
 -| تغییر وضعیت قفل کانال (روشن - خاموش)
-
 ● /button `[ok | no]`
 -| تغییر وضعیت نمایش دکمه های ربات
-
 ● /share `(reply)`
 -| اشتراک گذاری شماره شما برای شخص
-
 ● /payam
 -| ارسال پیام به کاربر توسط آیدی عددی
-
 ● /sendtoall
 -| ارسال پیام همگانی
-
 ● /fwdtoall
 -| فروارد همگانی پیام
-
 ● /info `(reply)`
 -| نمایش اطلاعات شخص
-
 ● /setstart `(text)`
 -| تنظیم متن شروع ربات
-
 ● /setdone `(text)`
 -| تنظیم متن پیش فرض
-
 ● /setprofile `(text)`
 -| تنظیم متن دکمه پروفایل
-
 ● /delprofile
 -| حذف متن دکمه پروفایل
-
 ● /reset
 -| ریست تمامی داده های ربات
-
 ● /backup
 -| دریافت یک نسخه پشتیبان از سورس
-
 Souce By *#RaMiN*
 ",
 'parse_mode'=> 'MaRkDowN',
@@ -650,7 +602,6 @@ elseif($step == "smg" && $text !='/start'){
     SendMessage($id, "$text");
 SendMessage($chat_id , "🎫 متن پیام شما :
 *$text*
-
 با موفقیت به کاربر *$id* ارسال شد▫️✔️");
     } else{
  SendAction($chat_id, 'typing');
@@ -668,7 +619,6 @@ elseif($text=="/reset" && $from_id == $Dev){
 	bot('SendMessage',[
 'chat_id'=>$chat_id,
 'text'=>"⚠️ آیا از ریست کامل ربات خود مطمئن هستید؟
-
 ☢ این عمل باعث از دست رفتن تمامی داده های ربات شما از جمله :
 _● پاکسازی لیست اعضا
 ● پاکسازی لیست مسدود
